@@ -23,10 +23,6 @@ CREATE TABLE employee (
   last_name VARCHAR(100) NOT NULL,
   role_id INT,
   manager_id INT,
-  FOREIGN KEY (role_id)
-  REFERENCES role(id)
-  ON DELETE SET NULL
-  FOREIGN KEY (manager_id) 
-  REFERENCES employee(id) 
-  ON DELETE SET NULL
+  FOREIGN KEY (role_id) REFERENCES role(id) ON DELETE SET NULL
+  FOREIGN KEY (manager_id) REFERENCES employee(id) ON DELETE SET NULL
 );
