@@ -72,7 +72,7 @@ function startPrompt() {
 // Function that allows the user to view all employees in the DB
 function viewAllEmployees() {
   connection.query(
-    "SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name, CONCAT(e.first_name, ' ' ,e.last_name) AS Manager FROM employee INNER JOIN role ON role.id = employee.role_id INNER JOIN department AS Department ON department.id = role.department_id left join employee e on employee.manager_id = e.id;",
+    "SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name, CONCAT(e.first_name, ' ' ,e.last_name) AS Manager FROM employee INNER JOIN role ON role.id = employee.role_id INNER JOIN department AS Department ON department.id = role.department_id LEFT JOIN employee e ON employee.manager_id = e.id;",
     function (err, res) {
       if (err) throw err;
       console.table(res);
@@ -80,17 +80,7 @@ function viewAllEmployees() {
     }
   );
 }
-// Function that shows all of the roles and the salaries associated with them.
-function viewAllRoles() {
-  connection.query(
-    "SELECT employee.first_name, employee.last_name, role.title AS title FROM employee JOIN role ON employee.role_id = role.id;",
-    function (err, res) {
-      if (err) throw err;
-      console.table(res);
-      startPrompt();
-    }
-  );
-}
+
 // Function that allows the user to view all departments
 function viewAllDepartments() {
   connection.query("SELECT * FROM department;", function (err, res) {
@@ -99,10 +89,10 @@ function viewAllDepartments() {
     startPrompt();
   });
 }
-
+// Function for showing the roles and departments
 function viewAllRoles() {
   connection.query(
-    "SELECT role.id, role.title, role.salary , role.department_id AS Department FROM role JOIN department ON department_id = department.id;",
+    "SELECT role.id, role.title, role.salary , role.department_id AS department FROM role JOIN department ON role.department_id = department.id;",
     (err, table) => {
       if (err) {
         console.log(err);
