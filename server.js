@@ -220,9 +220,9 @@ function addEmployee() {
         choices: selectManager()
       },
     ])
-    .then(function (val) {
-      let roleID = selectRole().indexOf(val.role) + 1
-      let managerID = selectManager().indexOf(val.choices) + 1
+    .then(function (res) {
+      let roleID = selectRole().indexOf(res.role) + 1
+      let managerID = selectManager().indexOf(res.choices) + 1
       connection.query(
         "INSERT INTO employee AS SET ?",
         {
