@@ -79,24 +79,69 @@ function viewAllEmployees() {
       startPrompt();
     }
   );
-};
+}
 
 function viewAllRoles() {
-    connection.query("SELECT employee.first_name, employee.last_name, role.title AS title FROM employee JOIN role ON employee.role_id = role.id;", 
+  connection.query(
+    "SELECT employee.first_name, employee.last_name, role.title AS title FROM employee JOIN role ON employee.role_id = role.id;",
     function (err, res) {
-        if (err) throw err;
-        console.table(res);
-        startPrompt();
-      }
-    );
-};
+      if (err) throw err;
+      console.table(res);
+      startPrompt();
+    }
+  );
+}
 
 function viewAllDepartments() {
-    connection.query("SELECT employee.first_name, employee.last_name, department.name AS department FROM employee JOIN role ON employee.role_id = role.id JOIN department ON role.department_id = department.id ORDER BY employee.id DESC;",
+  connection.query(
+    "SELECT employee.first_name, employee.last_name, department.name AS department FROM employee JOIN role ON employee.role_id = role.id JOIN department ON role.department_id = department.id ORDER BY employee.id DESC;",
     function (err, res) {
-        if (err) throw err;
-        console.table(res);
-        startPrompt();
+      if (err) throw err;
+      console.table(res);
+      startPrompt();
+    }
+  );
+}
+
+function viewAllRoles() {
+  connection.query(
+    "SELECT role.id, role.title, role.salary FROM role;",
+    (err, table) => {
+      if (err) {
+        console.log(err);
       }
-    );
-};
+      console.table(table);
+      startPrompt();
+    }
+  );
+}
+
+function addRole() {
+  connection.query("SELECT role.title AS title, role.salary AS salary FROM role;",  function(err, res) {
+    inquirer.prompt([
+      {
+        name: "title",
+        type: "input",
+        message: "What is the title of the new role?"
+      },
+      {
+        name: "salary",
+        type: "input",
+        message: "What is the salary for this role?"
+      }
+    ]).then(function(res) {
+      connection.query(
+        "INSERT INTO role SET ?",
+        {
+          title: res.title,
+          salary: res.salary,
+        },
+        function(err) {
+          if (err) throw err;
+          console.table(res);
+          startPrompt();
+        }
+      )
+    });
+  });
+}
