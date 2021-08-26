@@ -72,7 +72,7 @@ function startPrompt() {
 // Function that allows the user to view all employees in the DB
 function viewAllEmployees() {
   connection.query(
-    "SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name, CONCAT(e.first_name, ' ' ,e.last_name) AS Manager FROM employee INNER JOIN role on role.id = employee.role_id INNER JOIN department on department.id = role.department_id left join employee e on employee.manager_id = e.id;",
+    "SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name, CONCAT(e.first_name, ' ' ,e.last_name) AS Manager FROM employee INNER JOIN role ON role.id = employee.role_id INNER JOIN department AS Department ON department.id = role.department_id left join employee e on employee.manager_id = e.id;",
     function (err, res) {
       if (err) throw err;
       console.table(res);
@@ -102,7 +102,7 @@ function viewAllDepartments() {
 
 function viewAllRoles() {
   connection.query(
-    "SELECT role.id, role.title, role.salary FROM role;",
+    "SELECT role.id, role.title, role.salary , role.department_id AS Department FROM role JOIN department ON department_id = department.id;",
     (err, table) => {
       if (err) {
         console.log(err);
@@ -245,42 +245,48 @@ function addEmployee() {
 
 function updateEmployee() {
   connection.query(
-    "SELECT employee.last_name, role.title FROM employee JOIN role ON employee.role_id = role.id;", function(err, res) {
-      if(err) throw err;
+    "SELECT employee.last_name, role.title FROM employee JOIN role ON employee.role_id = role.id;",
+    function (err, res) {
+      if (err) throw err;
       console.log(res);
-      inquirer.prompt([
-        {
-          name: "lastname",
-          type: "rawlist",
-          choices: function() {
-            let lastname = [];
-            for(let i = 0; i < lastname.length; i++) {
-              lastname.push(lastname[i].last_name);
-            } return lastname;
+      inquirer
+        .prompt([
+          {
+            name: "lastname",
+            type: "rawlist",
+            choices: function () {
+              let lastname = [];
+              for (let i = 0; i < lastname.length; i++) {
+                lastname.push(lastname[i].last_name);
+              }
+              return lastname;
+            },
+            message: "Enter the employee's last name",
           },
-          message: "Enter the employee's last name",
-        },
-        {
-          name: "role",
-          type: "rawlist",
-          choices: selectRole(),
-          message: "What is the emploee's role?"
-        },
-      ]).then(function(val) {
-        var roleId = selectRole().indexOf(val.role) + 1;
-        connection.query("UPDATE employee SET WHERE ?", 
-        {
-          last_name: val.lastName,
-        },
-        {
-          role_id: val.roleId
-        },
-        function(err) {
-          if(err) throw err;
-          console.table(val);
-          startPrompt(); 
-        })
-      })
+          {
+            name: "role",
+            type: "rawlist",
+            choices: selectRole(),
+            message: "What is the emploee's role?",
+          },
+        ])
+        .then(function (val) {
+          var roleId = selectRole().indexOf(val.role) + 1;
+          connection.query(
+            "UPDATE employee SET WHERE ?",
+            {
+              last_name: val.lastName,
+            },
+            {
+              role_id: val.roleId,
+            },
+            function (err) {
+              if (err) throw err;
+              console.table(val);
+              startPrompt();
+            }
+          );
+        });
     }
-  )
+  );
 }
