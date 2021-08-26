@@ -229,8 +229,8 @@ function addEmployee() {
       connection.query(
         "INSERT INTO employee SET ?",
         {
-          first_name: val.first_name,
-          last_name: val.last_name,
+          first_name: val.firstname,
+          last_name: val.lastname,
           manager_id: managerId,
           role_id: roleId,
         },
