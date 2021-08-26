@@ -256,10 +256,31 @@ function updateEmployee() {
             let lastname = [];
             for(let i = 0; i < lastname.length; i++) {
               lastname.push(lastname[i].last_name);
-            }
-          }
-        }
-      ])
+            } return lastname;
+          },
+          message: "Enter the employee's last name",
+        },
+        {
+          name: "role",
+          type: "rawlist",
+          choices: selectRole(),
+          message: "What is the emploee's role?"
+        },
+      ]).then(function(val) {
+        var roleId = selectRole().indexOf(val.role) + 1;
+        connection.query("UPDATE employee SET WHERE ?", 
+        {
+          last_name: val.lastName,
+        },
+        {
+          role_id: val.roleId
+        },
+        function(err) {
+          if(err) throw err;
+          console.table(val);
+          startPrompt(); 
+        })
+      })
     }
   )
 }
