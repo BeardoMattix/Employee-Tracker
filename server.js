@@ -93,13 +93,11 @@ function viewAllRoles() {
 }
 // Function that allows the user to view all departments
 function viewAllDepartments() {
-  connection.query("SELECT * FROM department;",
-    function (err, res) {
-      if (err) throw err;
-      console.table(res);
-      startPrompt();
-    }
-  );
+  connection.query("SELECT * FROM department;", function (err, res) {
+    if (err) throw err;
+    console.table(res);
+    startPrompt();
+  });
 }
 
 function viewAllRoles() {
@@ -177,21 +175,26 @@ function addDepartment() {
 // Role queries for adding an employee
 const roleArray = [];
 function selectRole() {
-  connection.query("SELECT * FROM role", function(err, res) {
+  connection.query("SELECT * FROM role", function (err, res) {
     if (err) throw err;
     for (let i = 0; i < res.length; i++) {
-      roleArray.push(res[i].first_name);
+      roleArray.push(res[i].title);
     }
-  })
+  });
+  return roleArray;
 }
 const managersArray = [];
 function selectManager() {
-  connection.query("SELECT first_name, last_name FROM employee WHERE manager_id IS NULL", function(err, res) {
-    if (err) throw err;
-    for (let i = 0; i < res.length; i++) {
-      managersArray.push(res[i].first_name);
+  connection.query(
+    "SELECT first_name, last_name FROM employee WHERE manager_id IS NULL",
+    function (err, res) {
+      if (err) throw err;
+      for (let i = 0; i < res.length; i++) {
+        managersArray.push(res[i].first_name);
+      }
     }
-  })
+  );
+  return managersArray;
 }
 // Function for adding an employee.
 function addEmployee() {
@@ -200,36 +203,36 @@ function addEmployee() {
       {
         name: "firstname",
         type: "input",
-        message: "Enter the new employee's first name",
+        message: "Enter their first name ",
       },
       {
         name: "lastname",
         type: "input",
-        message: "Enter the new employee's last name",
+        message: "Enter their last name ",
       },
       {
         name: "role",
         type: "list",
-        message: "Enter the new employee's role",
-        choices: selectRole()
+        message: "What is their role? ",
+        choices: selectRole(),
       },
       {
-        name: "manager", 
+        name: "choice",
         type: "rawlist",
-        message: "Who is the new employee's manager?",
-        choices: selectManager()
+        message: "Whats their managers name?",
+        choices: selectManager(),
       },
     ])
-    .then(function (res) {
-      let roleID = selectRole().indexOf(res.role) + 1
-      let managerID = selectManager().indexOf(res.choices) + 1
+    .then(function (val) {
+      var roleId = selectRole().indexOf(val.role) + 1;
+      var managerId = selectManager().indexOf(val.choice) + 1;
       connection.query(
-        "INSERT INTO employee AS SET ?",
+        "INSERT INTO employee SET ?",
         {
-          firstname: val.firstname,
-          lastname: val.lastname,
-          role_id: roleID,
-          manager_id: managerID
+          first_name: val.first_name,
+          last_name: val.last_name,
+          manager_id: managerId,
+          role_id: roleId,
         },
         function (err) {
           if (err) throw err;
