@@ -242,3 +242,24 @@ function addEmployee() {
       );
     });
 }
+
+function updateEmployee() {
+  connection.query(
+    "SELECT employee.last_name, role.title FROM employee JOIN role ON employee.role_id = role.id;", function(err, res) {
+      if(err) throw err;
+      console.log(res);
+      inquirer.prompt([
+        {
+          name: "lastname",
+          type: "rawlist",
+          choices: function() {
+            let lastname = [];
+            for(let i = 0; i < lastname.length; i++) {
+              lastname.push(lastname[i].last_name);
+            }
+          }
+        }
+      ])
+    }
+  )
+}
