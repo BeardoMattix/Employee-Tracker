@@ -162,7 +162,7 @@ function addDepartment() {
     });
 }
 
-// Role queries 
+// Role queries
 const roleArray = [];
 function selectRole() {
   connection.query("SELECT * FROM role", function (err, res) {
@@ -173,7 +173,7 @@ function selectRole() {
   });
   return roleArray;
 }
-// Manager queries 
+// Manager queries
 const managersArray = [];
 function selectManager() {
   connection.query(
@@ -235,46 +235,49 @@ function addEmployee() {
 }
 // Function for updating the role of an employee
 function updateEmployee() {
-  connection.query("SELECT employee.last_name, role.title FROM employee JOIN role ON employee.role_id = role.id;", function(err, res) {
-   if (err) throw err
-   console.log(res)
-  inquirer.prompt([
-        {
-          name: "lastName",
-          type: "rawlist",
-          choices: function() {
-            var lastName = [];
-            for (var i = 0; i < res.length; i++) {
-              lastName.push(res[i].last_name);
-            }
-            return lastName;
+  connection.query(
+    "SELECT employee.last_name, role.title FROM employee JOIN role ON employee.role_id = role.id;",
+    function (err, res) {
+      if (err) throw err;
+      console.log(res);
+      inquirer
+        .prompt([
+          {
+            name: "lastName",
+            type: "rawlist",
+            choices: function () {
+              let lastName = [];
+              for (let i = 0; i < res.length; i++) {
+                lastName.push(res[i].last_name);
+              }
+              return lastName;
+            },
+            message: "What is the Employee's last name? ",
           },
-          message: "What is the Employee's last name? ",
-        },
-        {
-          name: "role",
-          type: "rawlist",
-          message: "What is the Employees new title? ",
-          choices: selectRole()
-        },
-    ]).then(function(val) {
-      var roleId = selectRole().indexOf(val.role) + 1
-      connection.query("UPDATE employee SET WHERE ?", 
-      {
-        last_name: val.lastName
-         
-      }, 
-      {
-        role_id: roleId
-         
-      }, 
-      function(err){
-          if (err) throw err
-          console.table(val)
-          startPrompt()
-      })
-
-  });
-});
-
+          {
+            name: "role",
+            type: "rawlist",
+            message: "What is the Employees new title? ",
+            choices: selectRole(),
+          },
+        ])
+        .then(function (val) {
+          let roleId = selectRole().indexOf(val.role) + 1;
+          connection.query(
+            "UPDATE employee SET WHERE ?",
+            {
+              last_name: val.lastName,
+            },
+            {
+              role_id: roleId
+            },
+            function (err) {
+              if (err) throw err;
+              console.table(val);
+              startPrompt();
+            }
+          );
+        });
+    }
+  );
 }
