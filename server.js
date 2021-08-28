@@ -264,13 +264,14 @@ function updateEmployee() {
         .then(function (val) {
           let roleId = selectRole().indexOf(val.role) + 1;
           connection.query(
-            "UPDATE employee SET WHERE ?",
-            {
+            "UPDATE employee SET ? WHERE ?",
+            // [roleId, val.lastname],
+            [{
               last_name: val.lastName,
             },
             {
               role_id: roleId
-            },
+            }],
             function (err) {
               if (err) throw err;
               console.table(val);
