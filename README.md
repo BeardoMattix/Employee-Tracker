@@ -38,7 +38,7 @@ https://user-images.githubusercontent.com/82903201/131254587-d381de2e-1805-46cf-
 ## Challenges
 
 * Understanding the SQL syntax and implementing it in the code.
-* Creating query statements and then testing them in Insomnia.
+* Creating query statements and then testing them in MySQL workbench.
 * There are a lot if files to keep track of. 
 
 ## Usage
@@ -54,6 +54,7 @@ https://user-images.githubusercontent.com/82903201/131254587-d381de2e-1805-46cf-
 
 ## Future Development
 * Update the application to run using Sequelize instead of hard coding query statements.
+* Use Dotenv npm and set up a connection file to handle access to server. 
 
 ## Questions
 * Take a look at my GitHub profile to see other projects: 
