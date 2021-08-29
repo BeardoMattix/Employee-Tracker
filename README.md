@@ -32,8 +32,8 @@ The application uses the Inquirer npm to gather information from the user, and t
 
 
 ## Demo
-![Employee-Tracker-demo](https://user-images.githubusercontent.com/82903201/131254587-d381de2e-1805-46cf-96a0-5cd15799e74c.mp4
-)
+https://user-images.githubusercontent.com/82903201/131254587-d381de2e-1805-46cf-96a0-5cd15799e74c.mp4
+
 
 ## Challenges
 
