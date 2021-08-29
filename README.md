@@ -3,9 +3,6 @@
 # <p align="center">Welcome to my Employee Tracker!</p> 
 ## <p align="center">A command line application for managing an employee database.</p>
 
-## Link to Deployed Site
-
-
 ## Table of Contents
   * [Description](#description)
   * [Installation](#installation)
