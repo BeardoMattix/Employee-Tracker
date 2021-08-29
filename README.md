@@ -13,13 +13,12 @@
 
 ## Description
 
-This application allows the user to manage an employee database in the command line. The application takes user input and updates and employee database. Users can view all the employees in the database, view all departments, view all roles. Users can also add employees, departments, roles, or update an existing employee's role. The application uses Express, MySQL, and NODE.js to dynamically respond to user input and update the database.  
+This application allows the user to manage an employee database in the command line. The application takes user input and updates and employee database. Users can view all the employees in the database, view all departments, view all roles. Users can also add employees, departments, roles, or update an existing employee's role. The application uses Node.js, MySQL, and npms packages to dynamically respond to user input and update the database.  
  
 ## Technologies
 * JavaScript
 * Node.js
-* Express
-* SQL
+* MySQL
 * Inquirer npm
 * Console.Table npm
 * MySQL2 npm
@@ -42,7 +41,7 @@ https://user-images.githubusercontent.com/82903201/131254587-d381de2e-1805-46cf-
 ## Usage
 * Use this app to keep track of employees.
 * Use this app to understand query statements in MySQL.
-* Use this app to see how express and SQL work together. 
+* Use this app to see how Node.js and SQL work together. 
 
 ## Installation
 * Install Node.js
