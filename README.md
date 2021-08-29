@@ -47,7 +47,7 @@ https://user-images.githubusercontent.com/82903201/131254587-d381de2e-1805-46cf-
 * Install Node.js
 * Enter 'npm init' in command line
 * Enter 'npm i' in the command line to install dependencies
-* Enter 'node start' in the command line to run the application
+* Enter 'npm start' in the command line to run the application
 
 ## Future Development
 * Update the application to run using Sequelize instead of hard coding query statements.
