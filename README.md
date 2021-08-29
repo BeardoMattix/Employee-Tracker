@@ -1,10 +1,10 @@
 
 
 # <p align="center">Welcome to my Employee Tracker!</p> 
-## <p align="center">A command line application for keeping track of employees.</p>
+## <p align="center">A command line application for managing an employee database.</p>
 
 ## Link to Deployed Site
-[Note Taker](https://dry-garden-33434.herokuapp.com/)
+
 
 ## Table of Contents
   * [Description](#description)
@@ -16,7 +16,7 @@
 
 ## Description
 
-This application allows the user to create and edit notes. It was built with JavaScript, Node.js, Express, and Heroku. When the user navigates to the application, they see a landing page with a "Get Started" button. From there, they can navigate to the note taking page and start creating notes. Only notes with a title and body can be saved. Once a note is created and saved, the user can click on it in the notes list to reopen and edit that note. 
+This application allows the user to manage an employee database in the command line. The application takes user input and updates and employee database. Users can view all the employees in the database, view all departments, view all roles. Users can also add employees, departments, roles, or update an existing employee's role. The application uses Express, MySQL, and NODE.js to dynamically respond to user input and update the database.  
  
 ## Technologies
 * JavaScript
@@ -28,11 +28,12 @@ This application allows the user to create and edit notes. It was built with Jav
 
 
 ## Functionality
-
+The application uses the Inquirer npm to gather information from the user, and takes the user responses and either returns information from specific tables in the database, or updates tables in the database. the Console.Table npm is used to return information from the database as a table in the command line. When the user installs the application, they run 'npm start' in the command line to start the app. 
 
 
 ## Demo
-![Employee-Tracker-demo]()
+![Employee-Tracker-demo](https://user-images.githubusercontent.com/82903201/131254587-d381de2e-1805-46cf-96a0-5cd15799e74c.mp4
+)
 
 ## Challenges
 
@@ -48,8 +49,8 @@ This application allows the user to create and edit notes. It was built with Jav
 ## Installation
 * Install Node.js
 * Enter 'npm init' in command line
-* Enter 'npm i' in the command line
-* Enter 'node server.js' in the command line
+* Enter 'npm i' in the command line to install dependencies
+* Enter 'node start' in the command line to run the application
 
 ## Future Development
 * Update the application to run using Sequelize instead of hard coding query statements.
