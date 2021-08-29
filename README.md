@@ -19,9 +19,10 @@ This application allows the user to manage an employee database in the command l
 * JavaScript
 * Node.js
 * Express
+* SQL
 * Inquirer npm
 * Console.Table npm
-* MySQL
+* MySQL2 npm
 
 
 ## Functionality
