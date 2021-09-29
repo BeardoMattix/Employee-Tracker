@@ -4,26 +4,6 @@ const inquirer = require("inquirer");
 const mysql = require("mysql2");
 const connection = require("./db/connection");
 
-// TODO: RENAME THIS FILE TO Index.js
-// FIXME:
-
-// const connection = mysql.createConnection({
-//   host: "localhost",
-//   port: 3306,
-//   user: "root",
-//   password: "Finntroll1",
-//   database: "employees_db",
-// });
-
-// connection.connect(function (err) {
-//   if (err) throw err;
-//   console.log("Now connected as ID" + connection.threadId);
-//   startPrompt();
-// });
-
-// TODO: Make server file unique to server only actions.
-//  TODO: Add detailed comments to show my understanding of the code.
-
 // Starts the inquireer packagage and allows users to answer prompts to interact with tables.
 function startPrompt() {
   inquirer
