@@ -2,23 +2,25 @@
 const inquirer = require("inquirer");
 // Imports the mysql package
 const mysql = require("mysql2");
-// Importing the console table package
-const cTable = require("console.table");
+const connection = require("connection");
+// TODO: RENAME THIS FILE TO Index.js
 
-const connection = mysql.createConnection({
-  host: "localhost",
-  port: 3306,
-  user: "root",
-  password: "Finntroll1",
-  database: "employees_db",
-});
-
-connection.connect(function (err) {
-  if (err) throw err;
-  console.log("Now connected as ID" + connection.threadId);
-  startPrompt();
-});
+// const connection = mysql.createConnection({
+//   host: "localhost",
+//   port: 3306,
+//   user: "root",
+//   password: "Finntroll1",
+//   database: "employees_db",
+// });
+// Move inquirer outside of server.js
+// connection.connect(function (err) {
+//   if (err) throw err;
+//   console.log("Now connected as ID" + connection.threadId);
+//   startPrompt();
+// });
 // This initializes the Inquirer package.
+// Make server file unique to server only actions.
+// Add detailed comments to show my understanding of the code.
 function startPrompt() {
   inquirer
     .prompt([
@@ -265,12 +267,14 @@ function updateEmployee() {
           let roleId = selectRole().indexOf(val.role) + 1;
           connection.query(
             "UPDATE employee SET ? WHERE ?",
-            [{
-              last_name: val.lastName,
-            },
-            {
-              role_id: roleId
-            }],
+            [
+              {
+                last_name: val.lastName,
+              },
+              {
+                role_id: roleId,
+              },
+            ],
             function (err) {
               if (err) throw err;
               console.table(val);
