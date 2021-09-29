@@ -3,6 +3,7 @@ const inquirer = require("inquirer");
 // Imports the mysql package
 const mysql = require("mysql2");
 const connection = require("./db/connection");
+
 // TODO: RENAME THIS FILE TO Index.js
 // FIXME:
 
@@ -302,3 +303,4 @@ function updateEmployee() {
     }
   );
 }
+startPrompt();
