@@ -2,7 +2,9 @@
 const inquirer = require("inquirer");
 // Imports the mysql package
 const mysql = require("mysql2");
+// Imports the connection file.
 const connection = require("./db/connection");
+const queries = require("./db/index.js");
 
 // Starts the inquireer packagage and allows users to answer prompts to interact with tables.
 function startPrompt() {
@@ -23,7 +25,7 @@ function startPrompt() {
         ],
       },
     ])
-    .then(function (value) {
+    .then((value) => {
       switch (value.choice) {
         case "View all employees":
           viewAllEmployees();
@@ -58,19 +60,17 @@ function startPrompt() {
 /* Function that allows the user to view all employees in the DB. 
 Joins the information from the Employees, Managers, Roles, and Departments table into one table.*/
 function viewAllEmployees() {
-  connection.query(
-    "SELECT employee.first_name, employee.last_name, role.title, role.salary, department.name, CONCAT(e.first_name, ' ' ,e.last_name) AS Manager FROM employee INNER JOIN role ON role.id = employee.role_id INNER JOIN department AS Department ON department.id = role.department_id LEFT JOIN employee e ON employee.manager_id = e.id;",
-    function (err, res) {
-      if (err) throw err;
-      console.table(res);
-      startPrompt();
-    }
-  );
+  connection.query(queries.allEmp, (err, res) => {
+    if (err) throw err;
+    console.table(res);
+    startPrompt();
+  });
 }
-
+// TODO: Change functions inside queries to arrow funtions.
+// TODO: Look into npm chalk.
 // Function that allows the user to view all departments by selecting all data from the managers table and displaying it in the terminal.
 function viewAllDepartments() {
-  connection.query("SELECT * FROM department;", function (err, res) {
+  connection.query(queries.allDept, (err, res) => {
     if (err) throw err;
     console.table(res);
     startPrompt();
@@ -78,54 +78,48 @@ function viewAllDepartments() {
 }
 // Function for showing the roles and departments. Selects the Rold ID, Title, Salary, and Department ID from the role table and joins the information together with the corresponding department.
 function viewAllRoles() {
-  connection.query(
-    "SELECT role.id, role.title, role.salary , role.department_id AS department FROM role JOIN department ON role.department_id = department.id;",
-    (err, table) => {
-      if (err) {
-        console.log(err);
-      }
-      console.table(table);
-      startPrompt();
+  connection.query(queries.allRoles, (err, table) => {
+    if (err) {
+      console.log(err);
     }
-  );
+    console.table(table);
+    startPrompt();
+  });
 }
 /* Function to add a role.
 Selects title and salary from the role table, and prompts the user to select a new role and salary.
 Inserts the new role (title) and salary into the role table.
 */
 function addRole() {
-  connection.query(
-    "SELECT role.title AS title, role.salary AS salary FROM role;",
-    function (err, res) {
-      inquirer
-        .prompt([
+  connection.query(queries.addRole, function (err, res) {
+    inquirer
+      .prompt([
+        {
+          name: "title",
+          type: "input",
+          message: "What is the title of the new role?",
+        },
+        {
+          name: "salary",
+          type: "input",
+          message: "What is the salary for this role?",
+        },
+      ])
+      .then(function (res) {
+        connection.query(
+          "INSERT INTO role SET ?",
           {
-            name: "title",
-            type: "input",
-            message: "What is the title of the new role?",
+            title: res.title,
+            salary: res.salary,
           },
-          {
-            name: "salary",
-            type: "input",
-            message: "What is the salary for this role?",
-          },
-        ])
-        .then(function (res) {
-          connection.query(
-            "INSERT INTO role SET ?",
-            {
-              title: res.title,
-              salary: res.salary,
-            },
-            function (err) {
-              if (err) throw err;
-              console.table(res);
-              startPrompt();
-            }
-          );
-        });
-    }
-  );
+          function (err) {
+            if (err) throw err;
+            console.table(res);
+            startPrompt();
+          }
+        );
+      });
+  });
 }
 /* Function to add a department.
 Prompts user to name the new department.
@@ -140,7 +134,7 @@ function addDepartment() {
         message: "Which department would you like to add?",
       },
     ])
-    .then(function (res) {
+    .then((res) => {
       connection.query(
         "INSERT INTO department SET ?",
         {
@@ -235,52 +229,49 @@ User selects the employee they want to update, zand then can update that employe
 The updated employee role is inserted into the employee table based on employee's last name.
 */
 function updateEmployee() {
-  connection.query(
-    "SELECT employee.last_name, role.title FROM employee JOIN role ON employee.role_id = role.id;",
-    function (err, res) {
-      if (err) throw err;
-      console.log(res);
-      inquirer
-        .prompt([
-          {
-            name: "lastName",
-            type: "rawlist",
-            choices: function () {
-              let lastName = [];
-              for (let i = 0; i < res.length; i++) {
-                lastName.push(res[i].last_name);
-              }
-              return lastName;
-            },
-            message: "What is the Employee's last name? ",
-          },
-          {
-            name: "role",
-            type: "rawlist",
-            message: "What is the Employees new title? ",
-            choices: selectRole(),
-          },
-        ])
-        .then(function (val) {
-          let roleId = selectRole().indexOf(val.role) + 1;
-          connection.query(
-            "UPDATE employee SET ? WHERE ?",
-            [
-              {
-                last_name: val.lastName,
-              },
-              {
-                role_id: roleId,
-              },
-            ],
-            function (err) {
-              if (err) throw err;
-              console.table(val);
-              startPrompt();
+  connection.query(queries.updateEmp, function (err, res) {
+    if (err) throw err;
+    console.log(res);
+    inquirer
+      .prompt([
+        {
+          name: "lastName",
+          type: "rawlist",
+          choices: function () {
+            let lastName = [];
+            for (let i = 0; i < res.length; i++) {
+              lastName.push(res[i].last_name);
             }
-          );
-        });
-    }
-  );
+            return lastName;
+          },
+          message: "What is the Employee's last name? ",
+        },
+        {
+          name: "role",
+          type: "rawlist",
+          message: "What is the Employees new title? ",
+          choices: selectRole(),
+        },
+      ])
+      .then(function (val) {
+        let roleId = selectRole().indexOf(val.role) + 1;
+        connection.query(
+          "UPDATE employee SET ? WHERE ?",
+          [
+            {
+              last_name: val.lastName,
+            },
+            {
+              role_id: roleId,
+            },
+          ],
+          function (err) {
+            if (err) throw err;
+            console.table(val);
+            startPrompt();
+          }
+        );
+      });
+  });
 }
 startPrompt();
